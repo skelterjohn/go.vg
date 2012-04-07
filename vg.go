@@ -1,7 +1,7 @@
 package vg
 
 type Color struct {
-	A, R, G, B uint8
+	R, G, B, A uint8
 }
 
 type Point struct {
@@ -13,86 +13,86 @@ type Size struct {
 }
 
 type Procedure struct {
-	operations []operation
+	Operations []Operation
 }
 
 func (me *Procedure) Translate(offset Point) {
-	me.operations = append(me.operations, operation{
-		kind: opTranslate,
-		floats: []float64{offset.X, offset.Y},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpTranslate,
+		Floats: []float64{offset.X, offset.Y},
 	})
 }
 
 func (me *Procedure) Rotate(radians float64) {
-	me.operations = append(me.operations, operation{
-		kind: opRotate,
-		floats: []float64{radians},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpRotate,
+		Floats: []float64{radians},
 	})
 }
 
 func (me *Procedure) Scale(size Size) {
-	me.operations = append(me.operations, operation{
-		kind: opScale,
-		floats: []float64{size.W, size.H},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpScale,
+		Floats: []float64{size.W, size.H},
 	})
 }
 
 func (me *Procedure) LineColor(color Color) {
-	me.operations = append(me.operations, operation{
-		kind: opLineColor,
-		ints: []uint8{color.A, color.R, color.G, color.B},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpLineColor,
+		Ints: []uint8{color.R, color.G, color.B, color.A},
 	})
 }
 
 func (me *Procedure) FillColor(color Color) {
-	me.operations = append(me.operations, operation{
-		kind: opFillColor,
-		ints: []uint8{color.A, color.R, color.G, color.B},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpFillColor,
+		Ints: []uint8{color.R, color.G, color.B, color.A},
 	})
 }
 
 func (me *Procedure) Line(start, end Point) {
-	me.operations = append(me.operations, operation{
-		kind: opLine,
-		floats: []float64{start.X, start.Y, end.X, end.Y},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpLine,
+		Floats: []float64{start.X, start.Y, end.X, end.Y},
 	})
 }
 
 func (me *Procedure) Rect(center Point, size Size) {
-	me.operations = append(me.operations, operation{
-		kind: opRect,
-		floats: []float64{center.X, center.Y, size.W, size.H,},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpRect,
+		Floats: []float64{center.X, center.Y, size.W, size.H,},
 	})
 }
 
 func (me *Procedure) Ellipse(center Point, size Size) {
-	me.operations = append(me.operations, operation{
-		kind: opEllipse,
-		floats: []float64{center.X, center.Y, size.W, size.H,},
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpEllipse,
+		Floats: []float64{center.X, center.Y, size.W, size.H,},
 	})
 }
 
 func (me *Procedure) Poly(vertices []Point) {
-	op := operation{
-		kind: opPolygon,
+	op := Operation{
+		Kind: OpPolygon,
 	}
-	me.operations = append(me.operations, op)
+	me.Operations = append(me.Operations, op)
 	for _, v := range vertices {
-		op.floats = append(op.floats, v.X, v.Y)
+		op.Floats = append(op.Floats, v.X, v.Y)
 	}
 }
 
 func (me *Procedure) Proc(proc *Procedure) {
-	me.operations = append(me.operations, operation{
-		kind: opProc,
-		operations: proc.operations,
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpProc,
+		Operations: proc.Operations,
 	})
 }
 
 func (me *Procedure) ProcClip(proc *Procedure, center Point, size Size) {
-	me.operations = append(me.operations, operation{
-		kind: opProc,
-		floats: []float64{center.X, center.Y, size.W, size.H,},
-		operations: proc.operations,
+	me.Operations = append(me.Operations, Operation{
+		Kind: OpProc,
+		Floats: []float64{center.X, center.Y, size.W, size.H,},
+		Operations: proc.Operations,
 	})
 }

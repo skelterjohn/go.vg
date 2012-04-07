@@ -1,22 +1,21 @@
 package vg
 
 const (
-	opTranslate = iota
-	opRotate
-	opScale
-	opLineColor
-	opFillColor
-	opLine
-	opRect
-	opEllipse
-	opPolygon
-	opVertex
-	opProc
+	OpTranslate = iota
+	OpRotate
+	OpScale
+	OpLineColor
+	OpFillColor
+	OpLine
+	OpRect
+	OpEllipse
+	OpPolygon
+	OpProc
 )
 
-type operation struct {
-	kind       int
-	floats     []float64
-	ints       []uint8
-	operations []operation
+type Operation struct {
+	Kind       int
+	Floats     []float64
+	Ints       []uint8
+	Operations []Operation
 }
